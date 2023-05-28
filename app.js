@@ -6,7 +6,6 @@ const inputElement = document.querySelector("input");
 const inputValue = document.querySelector("#inputValue");
 const historyElement = document.querySelector(".history");
 const buttonElement = document.querySelector("button");
-const hrElement = document.querySelector("hr");
 const contentElement = document.querySelector("#content");
 const customersElement = document.querySelector(".customers");
 
@@ -87,7 +86,6 @@ function clearInput() {
     inputElement.value = "";
     outputElement.textContent = "";
     inputValue.textContent = "";
-    hrElement.classList.remove("show");
 };
 
 buttonElement.addEventListener("click", clearInput);
