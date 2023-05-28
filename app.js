@@ -59,14 +59,12 @@ async function getMessage() {
             const response = data.choices[0].message.content;
             const words = response.split(" ");
             if (words) {
-                setTimeout(() => {
                     newOutput.removeChild(blink);
                     words.map((word, index) => {
                         setTimeout(() => {
                         newOutput.textContent += `${word} `;
                         }, 150 * index);
-                    })
-                }, 2000);
+                    });
             const pElement = document.createElement("p");
             pElement.textContent = input;
             pElement.addEventListener("click", () => changeInput(pElement.textContent));
