@@ -98,7 +98,7 @@ input {
     background-color: var(--grayish);
     width: 100%;
     font-size: 20px;
-    padding: 17px 15px;
+    padding: 17px 60px 15px 17px;
     border-radius: 2px;
     /* box-shadow: 0.2rem 0 0.1rem #ea36af, -0.15rem 0 0.06rem #75fa69;
     animation-duration: 0.05s;

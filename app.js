@@ -13,7 +13,16 @@ function changeInput(value) {
     inputElement.value = value;
 }; 
 
+// add new chat in the side bar only if new chat was clicked 
+
+const today = new Date().toLocaleString('fr-FR').slice(0, 10);
+let limit = {
+    date: today,
+    question: 0
+};
 async function getMessage() {
+    // add limit on calls with local storage
+    const currentLimit = JSON.parse(window.localStorage.getItem("limit"));
     customersElement.classList.add("remove");
     const input = inputElement.value;
     const newInput = document.createElement("p");
@@ -21,14 +30,19 @@ async function getMessage() {
     newInput.textContent = "Q: " + input;
     contentElement.append(newInput);
     const newOutput = document.createElement("p");
-    const blink = document.createElement("span");
-    blink.classList.add("blink");
-    blink.textContent = "_";
     newOutput.classList.add("answer");
     newOutput.textContent = "A: ";
     contentElement.append(newOutput);
-    newOutput.append(blink);
+    // make conversation scroll down to newest added message
+    newOutput.scrollIntoView({behavior: "smooth"});
     inputElement.value = "";
+    if (currentLimit && currentLimit.question >= 5 && currentLimit.date === today) {
+        newOutput.textContent += "Sorry, you have reached your limit for today, come back tomorrow young padawan!";
+    } else {
+    const blink = document.createElement("span");
+    blink.classList.add("blink");
+    blink.textContent = "_";
+    newOutput.append(blink);
     const options = {
         method: "POST",
         headers: {
@@ -55,6 +69,13 @@ async function getMessage() {
         const response = await fetch("https://api.openai.com/v1/chat/completions", options);
         const data = await response.json();
         if (data.choices[0].message.content) {
+            if (currentLimit && currentLimit.date === today) {
+                limit.question++;
+            } else {
+                limit.date = today;
+                limit.question = 1;
+            };
+            window.localStorage.setItem("limit", JSON.stringify(limit));
             const response = data.choices[0].message.content;
             const words = response.split(" ");
             if (words) {
@@ -73,6 +94,7 @@ async function getMessage() {
         console.error(error);
 
     }
+}
 }
 
 submitButton.addEventListener("click", getMessage);
